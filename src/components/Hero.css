@@ -1,0 +1,99 @@
+.hero {
+  background-color: var(--color-secondary);
+  padding: 60px 0;
+}
+
+.hero__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+/* Text side */
+.hero__text {
+  flex: 1;
+  max-width: 500px;
+}
+
+.hero__title {
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.hero__subtitle {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  color: var(--color-white);
+  font-weight: 400;
+  margin-top: 4px;
+}
+
+.hero__description {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: var(--color-white);
+  margin-top: 16px;
+  line-height: 1.6;
+}
+
+.hero__button {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 14px 30px;
+  background-color: var(--color-primary);
+  color: var(--color-dark);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 16px;
+  text-decoration: none;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.hero__button:hover,
+.hero__button:focus {
+  background-color: #e0b800;
+  transform: translateY(-2px);
+  outline: 2px solid var(--color-white);
+  outline-offset: 2px;
+}
+
+/* Image/decorative side */
+.hero__image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* Real food photo in the hero */
+.hero__photo {
+  width: 320px;
+  height: 320px;
+  object-fit: cover;     /* Crop nicely without stretching */
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 768px) {
+  .hero__inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero__title {
+    font-size: 3rem;
+  }
+
+  .hero__subtitle {
+    font-size: 2rem;
+  }
+
+  .hero__image-placeholder {
+    width: 200px;
+    height: 200px;
+    font-size: 5rem;
+  }
+}

@@ -1,0 +1,115 @@
+.header {
+  background-color: var(--color-white);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+}
+
+.header__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.logo__lemon {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.logo__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo__name {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-secondary);
+}
+
+.logo__city {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--color-highlight);
+  letter-spacing: 1px;
+}
+
+.header__nav .nav__list {
+  display: flex;
+  list-style: none;
+  gap: 24px;
+}
+
+.nav__link {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--color-dark);
+  text-decoration: none;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.nav__link:hover,
+.nav__link:focus {
+  color: var(--color-secondary);
+  border-bottom-color: var(--color-primary);
+  outline: none;
+}
+
+.header__hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.bar {
+  display: block;
+  width: 26px;
+  height: 3px;
+  background-color: var(--color-secondary);
+  border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+  .header__hamburger {
+    display: flex;
+  }
+
+  .header__nav {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: var(--color-white);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 16px 20px;
+  }
+
+  .header__nav--open {
+    display: block;
+  }
+
+  .header__nav .nav__list {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
