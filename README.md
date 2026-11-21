@@ -1,4 +1,4 @@
-# Little Lemon — Table Reservation App
+# Little Lemon - Table Reservation App
 
 A responsive React web application for booking tables at the Little Lemon Mediterranean restaurant in Chicago. Built as the final capstone project for the Meta Front-End Developer Professional Certificate.
 
