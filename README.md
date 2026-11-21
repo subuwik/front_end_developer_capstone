@@ -1,23 +1,31 @@
-# Little Lemon Table Reservation App
+# Little Lemon — Table Reservation App
 
-A responsive React web application for booking tables at the Little Lemon restaurant. Built as the final capstone project for the Meta Front-End Developer program.
+A responsive React web application for booking tables at the Little Lemon Mediterranean restaurant in Chicago. Built as the final capstone project for the Meta Front-End Developer Professional Certificate.
 
 ## Features
 
-- **Table reservation:** Interactive booking form with date/time selection, guest count, occasion picker and client-side validation.
-- **Responsive layout:** Semantic HTML and CSS Grid/Flexbox sections (`Header`, `Hero`, `Specials`, `Footer`).
-- **Unit testing:** Component rendering and form validation tests written with Jest and React Testing Library.
+- Responsive navigation bar with mobile hamburger menu
+- Weekly specials section with dish cards
+- Table reservation form with client-side validation (required fields, email format, guest limit 1–10, no past dates)
+- Dynamic available time slots based on weekday vs. weekend
+- Booking confirmation view with reset option
+- Unit tests for time slot logic and form validation
 
-## Structure
+## Tech Stack
 
-```text
-src/
-  components/   UI components (Header, Hero, Specials, BookingForm, Footer)
-  App.js        Main layout and state management
-  App.test.js   Unit tests for booking form and components
-```
-How to run
-```
+- React
+- CSS (BEM naming, responsive layout)
+- Jest & React Testing Library
+
+## Getting Started
+
+```bash
 npm install
 npm start
+```
+
+Run tests:
+
+```bash
+npm test
 ```

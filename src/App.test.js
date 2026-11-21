@@ -81,6 +81,13 @@ describe('validateForm', () => {
     expect(errors.date).toBeDefined();
   });
 
+  test('returns error when date is in the past', () => {
+    const formData = makeValidForm();
+    formData.date = '2020-01-01';
+    const errors = validateForm(formData);
+    expect(errors.date).toBeDefined();
+  });
+
   test('returns error when time is empty', () => {
     const formData = makeValidForm();
     formData.time = '';

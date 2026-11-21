@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import './BookingForm.css';
 
+function parseLocalDate(dateString) {
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
 export function getAvailableTimes(date) {
   if (!date) return [];
 
-  const dayOfWeek = new Date(date).getDay();
+  const dayOfWeek = parseLocalDate(date).getDay();
 
   if (dayOfWeek === 0 || dayOfWeek === 6) {
     return ['12:00', '13:00', '14:00', '17:00', '18:00', '19:00', '20:00', '21:00'];
@@ -12,7 +17,6 @@ export function getAvailableTimes(date) {
 
   return ['12:00', '13:00', '18:00', '19:00', '20:00'];
 }
-
 
 export function validateForm(formData) {
   const errors = {};
@@ -36,7 +40,7 @@ export function validateForm(formData) {
   } else {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const selectedDate = new Date(formData.date);
+    const selectedDate = parseLocalDate(formData.date);
     if (selectedDate < today) {
       errors.date = 'Date cannot be in the past.';
     }
@@ -49,25 +53,26 @@ export function validateForm(formData) {
   const guests = parseInt(formData.guests, 10);
   if (!formData.guests) {
     errors.guests = 'Number of guests is required.';
-  } else if (guests < 1 || guests > 10) {
+  } else if (Number.isNaN(guests) || guests < 1 || guests > 10) {
     errors.guests = 'Number of guests must be between 1 and 10.';
   }
 
   return errors;
 }
 
-function BookingForm() {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    date: '',
-    time: '',
-    guests: '',
-    occasion: '',
-    specialRequests: '',
-  });
+const initialFormState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  date: '',
+  time: '',
+  guests: '',
+  occasion: '',
+  specialRequests: '',
+};
 
+function BookingForm() {
+  const [formData, setFormData] = useState(initialFormState);
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
@@ -79,17 +84,8 @@ function BookingForm() {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+      ...(name === 'date' ? { time: '' } : {}),
     }));
-
-
-    if (name === 'date') {
-      setFormData((prev) => ({
-        ...prev,
-        date: value,
-        time: '',
-      }));
-    }
-
 
     if (errors[name]) {
       setErrors((prev) => ({
@@ -103,7 +99,6 @@ function BookingForm() {
     e.preventDefault();
 
     const formErrors = validateForm(formData);
-
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
       return;
@@ -113,27 +108,17 @@ function BookingForm() {
   };
 
   const handleReset = () => {
-    setFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      date: '',
-      time: '',
-      guests: '',
-      occasion: '',
-      specialRequests: '',
-    });
+    setFormData(initialFormState);
     setErrors({});
     setSubmitted(false);
   };
-
 
   if (submitted) {
     return (
       <section className="booking" id="reservations" aria-labelledby="booking-heading">
         <div className="booking__inner container">
-          <div className="booking__confirmation" role="alert" aria-live="polite">
-            <span className="confirmation__icon" aria-hidden="true">✅</span>
+          <div className="booking__confirmation" role="alert">
+            <span className="confirmation__icon" aria-hidden="true">✓</span>
             <h2 className="confirmation__title">Booking Confirmed!</h2>
             <p className="confirmation__text">
               Thank you, <strong>{formData.firstName}</strong>! Your table for{' '}
@@ -143,11 +128,7 @@ function BookingForm() {
             <p className="confirmation__text">
               A confirmation will be sent to <strong>{formData.email}</strong>.
             </p>
-            <button
-              className="booking__submit-btn"
-              onClick={handleReset}
-              aria-label="Make another reservation"
-            >
+            <button type="button" className="booking__submit-btn" onClick={handleReset}>
               Make Another Reservation
             </button>
           </div>
@@ -164,21 +145,12 @@ function BookingForm() {
           Book your dining experience at Little Lemon. Fields marked with * are required.
         </p>
 
-        <form
-          className="booking__form"
-          onSubmit={handleSubmit}
-          noValidate
-          aria-label="Table reservation form"
-        >
-
+        <form className="booking__form" onSubmit={handleSubmit} noValidate>
           <fieldset className="form__fieldset">
             <legend className="form__legend">Personal Details</legend>
 
-
             <div className="form__group">
-              <label htmlFor="firstName" className="form__label">
-                First Name *
-              </label>
+              <label htmlFor="firstName" className="form__label">First Name *</label>
               <input
                 type="text"
                 id="firstName"
@@ -187,28 +159,18 @@ function BookingForm() {
                 onChange={handleChange}
                 className={`form__input ${errors.firstName ? 'form__input--error' : ''}`}
                 placeholder="e.g. John"
-                aria-required="true"
-                aria-describedby={errors.firstName ? 'firstName-error' : undefined}
                 aria-invalid={!!errors.firstName}
+                aria-describedby={errors.firstName ? 'firstName-error' : undefined}
               />
-
               {errors.firstName && (
-                <span
-                  id="firstName-error"
-                  className="form__error"
-                  role="alert"
-                  aria-live="polite"
-                >
+                <span id="firstName-error" className="form__error" role="alert">
                   {errors.firstName}
                 </span>
               )}
             </div>
 
-
             <div className="form__group">
-              <label htmlFor="lastName" className="form__label">
-                Last Name *
-              </label>
+              <label htmlFor="lastName" className="form__label">Last Name *</label>
               <input
                 type="text"
                 id="lastName"
@@ -217,22 +179,18 @@ function BookingForm() {
                 onChange={handleChange}
                 className={`form__input ${errors.lastName ? 'form__input--error' : ''}`}
                 placeholder="e.g. Smith"
-                aria-required="true"
-                aria-describedby={errors.lastName ? 'lastName-error' : undefined}
                 aria-invalid={!!errors.lastName}
+                aria-describedby={errors.lastName ? 'lastName-error' : undefined}
               />
               {errors.lastName && (
-                <span id="lastName-error" className="form__error" role="alert" aria-live="polite">
+                <span id="lastName-error" className="form__error" role="alert">
                   {errors.lastName}
                 </span>
               )}
             </div>
 
-
             <div className="form__group">
-              <label htmlFor="email" className="form__label">
-                Email Address *
-              </label>
+              <label htmlFor="email" className="form__label">Email Address *</label>
               <input
                 type="email"
                 id="email"
@@ -241,12 +199,11 @@ function BookingForm() {
                 onChange={handleChange}
                 className={`form__input ${errors.email ? 'form__input--error' : ''}`}
                 placeholder="e.g. john@email.com"
-                aria-required="true"
-                aria-describedby={errors.email ? 'email-error' : undefined}
                 aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? 'email-error' : undefined}
               />
               {errors.email && (
-                <span id="email-error" className="form__error" role="alert" aria-live="polite">
+                <span id="email-error" className="form__error" role="alert">
                   {errors.email}
                 </span>
               )}
@@ -256,11 +213,8 @@ function BookingForm() {
           <fieldset className="form__fieldset">
             <legend className="form__legend">Reservation Details</legend>
 
-
             <div className="form__group">
-              <label htmlFor="date" className="form__label">
-                Date *
-              </label>
+              <label htmlFor="date" className="form__label">Date *</label>
               <input
                 type="date"
                 id="date"
@@ -269,34 +223,28 @@ function BookingForm() {
                 onChange={handleChange}
                 className={`form__input ${errors.date ? 'form__input--error' : ''}`}
                 min={new Date().toISOString().split('T')[0]}
-                aria-required="true"
-                aria-describedby={errors.date ? 'date-error' : undefined}
                 aria-invalid={!!errors.date}
+                aria-describedby={errors.date ? 'date-error' : undefined}
               />
               {errors.date && (
-                <span id="date-error" className="form__error" role="alert" aria-live="polite">
+                <span id="date-error" className="form__error" role="alert">
                   {errors.date}
                 </span>
               )}
             </div>
 
-
             <div className="form__group">
-              <label htmlFor="time" className="form__label">
-                Time *
-              </label>
+              <label htmlFor="time" className="form__label">Time *</label>
               <select
                 id="time"
                 name="time"
                 value={formData.time}
                 onChange={handleChange}
                 className={`form__input ${errors.time ? 'form__input--error' : ''}`}
-                aria-required="true"
-                aria-describedby={errors.time ? 'time-error' : 'time-hint'}
                 aria-invalid={!!errors.time}
+                aria-describedby={errors.time ? 'time-error' : 'time-hint'}
               >
                 <option value="">-- Select a time --</option>
-
                 {availableTimes.length > 0 ? (
                   availableTimes.map((slot) => (
                     <option key={slot} value={slot}>
@@ -316,17 +264,14 @@ function BookingForm() {
                 </span>
               )}
               {errors.time && (
-                <span id="time-error" className="form__error" role="alert" aria-live="polite">
+                <span id="time-error" className="form__error" role="alert">
                   {errors.time}
                 </span>
               )}
             </div>
 
-
             <div className="form__group">
-              <label htmlFor="guests" className="form__label">
-                Number of Guests *
-              </label>
+              <label htmlFor="guests" className="form__label">Number of Guests *</label>
               <input
                 type="number"
                 id="guests"
@@ -337,12 +282,11 @@ function BookingForm() {
                 min="1"
                 max="10"
                 placeholder="e.g. 2"
-                aria-required="true"
-                aria-describedby={errors.guests ? 'guests-error' : undefined}
                 aria-invalid={!!errors.guests}
+                aria-describedby={errors.guests ? 'guests-error' : undefined}
               />
               {errors.guests && (
-                <span id="guests-error" className="form__error" role="alert" aria-live="polite">
+                <span id="guests-error" className="form__error" role="alert">
                   {errors.guests}
                 </span>
               )}
@@ -358,7 +302,6 @@ function BookingForm() {
                 value={formData.occasion}
                 onChange={handleChange}
                 className="form__input"
-                aria-required="false"
               >
                 <option value="">-- None --</option>
                 <option value="birthday">Birthday</option>
@@ -367,7 +310,6 @@ function BookingForm() {
                 <option value="other">Other</option>
               </select>
             </div>
-
 
             <div className="form__group">
               <label htmlFor="specialRequests" className="form__label">
@@ -381,20 +323,13 @@ function BookingForm() {
                 className="form__input form__textarea"
                 placeholder="e.g. Window seat, high chair needed, allergies..."
                 rows="3"
-                aria-required="false"
               />
             </div>
           </fieldset>
 
-
-          <button
-            type="submit"
-            className="booking__submit-btn"
-            aria-label="Submit table reservation"
-          >
+          <button type="submit" className="booking__submit-btn">
             Make your reservation
           </button>
-
         </form>
       </div>
     </section>

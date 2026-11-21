@@ -5,12 +5,11 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="footer" id="contact" role="contentinfo">
+    <footer className="footer" id="contact">
       <div className="footer__inner container">
-
         <div className="footer__column">
-          <div className="footer__logo" aria-label="Little Lemon Restaurant">
-            <img src="/food/images.jpg" alt="Little Lemon" className="footer__logo-img" />
+          <div className="footer__logo">
+            <img src="/lemon-logo.svg" alt="Little Lemon logo" className="footer__logo-img" />
             <span className="footer__logo-text">Little Lemon</span>
           </div>
           <p className="footer__tagline">
@@ -23,7 +22,6 @@ function Footer() {
           <nav aria-label="Footer navigation">
             <ul className="footer__list">
               <li><a href="#home" className="footer__link">Home</a></li>
-              <li><a href="#about" className="footer__link">About</a></li>
               <li><a href="#menu" className="footer__link">Menu</a></li>
               <li><a href="#reservations" className="footer__link">Reservations</a></li>
             </ul>
@@ -32,19 +30,19 @@ function Footer() {
 
         <div className="footer__column">
           <h3 className="footer__heading">Contact</h3>
-          <ul className="footer__list" aria-label="Contact information">
+          <ul className="footer__list">
             <li>
               <address className="footer__address">
                 123 Main Street, Chicago, IL 60601
               </address>
             </li>
             <li>
-              <a href="tel:+13125550123" className="footer__link" aria-label="Call us at (312) 555-0123">
+              <a href="tel:+13125550123" className="footer__link">
                 (312) 555-0123
               </a>
             </li>
             <li>
-              <a href="mailto:hello@littlelemon.com" className="footer__link" aria-label="Email us">
+              <a href="mailto:hello@littlelemon.com" className="footer__link">
                 hello@littlelemon.com
               </a>
             </li>
@@ -54,11 +52,10 @@ function Footer() {
         <div className="footer__column">
           <h3 className="footer__heading">Opening Hours</h3>
           <ul className="footer__list">
-            <li>Monday – Friday: 12pm – 10pm</li>
-            <li>Saturday – Sunday: 11am – 11pm</li>
+            <li>Monday - Friday: 12pm - 10pm</li>
+            <li>Saturday - Sunday: 11am - 11pm</li>
           </ul>
         </div>
-
       </div>
 
       <div className="footer__bottom">
